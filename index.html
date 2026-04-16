@@ -93,6 +93,26 @@ video {
   transform: scale(1.05);
   opacity: 0.9;
 }
+
+/* 🔻 Footer kecil */
+.footer {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footer a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.footer a:hover {
+  color: white;
+}
 </style>
 </head>
 
@@ -112,6 +132,13 @@ video {
 
 <!-- 🔘 Buttons -->
 <div id="buttons"></div>
+
+<!-- 🔻 Footer -->
+<div class="footer">
+  <a href="https://wa.me/6285720294623" target="_blank">CS</a>
+  <a href="https://tiktok.com/@hanzgntgbngt" target="_blank">TikTok</a>
+  <a href="https://pin.it/3AC8H8wmu" target="_blank">Pinterest</a>
+</div>
 
 <script>
 fetch('data.json')
