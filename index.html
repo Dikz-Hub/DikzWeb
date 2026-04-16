@@ -1,68 +1,120 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Kumpulan Preset DikzPrst</title>
-  <style>
-    body {
-      background: #0f0f0f;
-      font-family: sans-serif;
-      text-align: center;
-      color: white;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DikzPreset</title>
 
-    h1 {
-      margin-top: 30px;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
 
-    .btn {
-      display: block;
-      margin: 15px auto;
-      padding: 15px;
-      width: 80%;
-      max-width: 300px;
-      border-radius: 10px;
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-      transition: 0.2s;
-    }
+body {
+  color: white;
+  text-align: center;
+}
 
-    .btn:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-  </style>
+/* 🎥 Background video */
+video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+/* overlay gelap */
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: -1;
+}
+
+/* 👤 Profile */
+.profile {
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+
+.profile img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 3px solid white;
+  object-fit: cover;
+}
+
+.profile h2 {
+  margin-top: 12px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+/* 🔘 Buttons */
+.btn {
+  display: block;
+  margin: 12px auto;
+  padding: 14px;
+  width: 85%;
+  max-width: 320px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  backdrop-filter: blur(10px);
+  transition: 0.25s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+</style>
 </head>
+
 <body>
 
-  <h1>List Presetnya</h1>
-  <div id="buttons"></div>
+<!-- 🎥 Video -->
+<video autoplay muted loop>
+  <source src="bg.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
 
-  <script>
-    const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1ue_DJbPfiT10A1BCXjv35fpzv8Rty0zED78LbU9MJ9g8-LpO1ALHste8F2XBG2dvxYpDfNTtGZDd/pub?output=csv";
+<!-- 👤 Profile -->
+<div class="profile">
+  <img src="pp.jpg">
+  <h2>DikzPreset</h2>
+</div>
 
-    fetch(sheetURL)
-      .then(res => res.text())
-      .then(text => {
-        const rows = text.split("\n").slice(1);
-        const container = document.getElementById("buttons");
+<!-- 🔘 Buttons -->
+<div id="buttons"></div>
 
-        rows.forEach(row => {
-          if (!row) return;
+<script>
+fetch('data.json')
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("buttons");
 
-          const [textBtn, color, link] = row.split(",");
+    data.forEach(btn => {
+      const a = document.createElement("a");
+      a.className = "btn";
+      a.innerText = btn.text;
+      a.href = btn.link;
+      a.target = "_blank";
+      a.style.background = btn.color;
 
-          const a = document.createElement("a");
-          a.className = "btn";
-          a.innerText = textBtn;
-          a.href = link;
-          a.style.background = color;
-
-          container.appendChild(a);
-        });
-      });
-  </script>
+      container.appendChild(a);
+    });
+  });
+</script>
 
 </body>
 </html>
