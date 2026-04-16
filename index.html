@@ -29,7 +29,7 @@ video {
   z-index: -2;
 }
 
-/* overlay gelap */
+/* overlay */
 .overlay {
   position: fixed;
   width: 100%;
@@ -60,17 +60,33 @@ video {
 
 /* 🔘 Buttons */
 .btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
   margin: 12px auto;
   padding: 14px;
   width: 85%;
   max-width: 320px;
+
   border-radius: 12px;
   text-decoration: none;
   color: white;
   font-weight: bold;
+
   backdrop-filter: blur(10px);
   transition: 0.25s;
+}
+
+.btn img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+}
+
+.btn span {
+  flex: 1;
+  text-align: center;
 }
 
 .btn:hover {
@@ -91,7 +107,7 @@ video {
 <!-- 👤 Profile -->
 <div class="profile">
   <img src="pp.jpg">
-  <h2>DikzPreset</h2>
+  <h2>@DikzPreset</h2>
 </div>
 
 <!-- 🔘 Buttons -->
@@ -106,10 +122,20 @@ fetch('data.json')
     data.forEach(btn => {
       const a = document.createElement("a");
       a.className = "btn";
-      a.innerText = btn.text;
       a.href = btn.link;
       a.target = "_blank";
       a.style.background = btn.color;
+
+      // gambar
+      const img = document.createElement("img");
+      img.src = btn.img;
+
+      // teks
+      const span = document.createElement("span");
+      span.innerText = btn.text;
+
+      a.appendChild(img);
+      a.appendChild(span);
 
       container.appendChild(a);
     });
