@@ -125,50 +125,51 @@ video {
   position: relative;
   width: 170px;
   height: 95px; /* 16:9 */
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* 🖼️ gambar utama */
+/* gambar */
 .popup-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 🔥 biar nggak gepeng */
+  object-fit: cover;
   position: absolute;
   top: 0;
   left: 0;
 }
 
-/* layer gelap */
+/* overlay gelap */
 .popup-box::after {
   content: "";
   position: absolute;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.4);
-  top: 0;
-  left: 0;
 }
 
-/* teks & tombol */
+/* isi */
 .popup-content {
   position: relative;
   z-index: 2;
-  color: white;
   text-align: center;
+  color: white;
   top: 50%;
   transform: translateY(-50%);
 }
 
+.popup-content p {
+  font-size: 11px;
+}
+
 .popup-content button {
-  margin-top: 8px;
-  padding: 5px 10px;
+  margin: 3px;
+  padding: 5px 8px;
   border: none;
-  border-radius: 8px;
-  background: rgba(37,211,102,0.3);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.2);
   color: white;
-  font-weight: bold;
 }
 
 /* 🔻 Footer kecil */
@@ -211,17 +212,22 @@ video {
 Am Prem murah tinggal pencet CS aja</p>
 </div>
 
-<!-- 🎵 Popup -->
+<!-- 🎵 Popup Musik -->
 <div id="musicPopup" class="popup">
   <div class="popup-box">
 
-    <!-- 🖼️ Gambar cover -->
+    <!-- 🖼️ Cover -->
     <img id="popupImg" src="music/cover1.jpg">
 
-    <!-- konten -->
+    <!-- 🎮 Konten -->
     <div class="popup-content">
       <p id="popupTitle">Klik buat play 😏</p>
-      <button id="playBtn">Play</button>
+
+      <div>
+        <button id="prevBtn">⏮</button>
+        <button id="playBtn">▶</button>
+        <button id="nextBtn">⏭</button>
+      </div>
     </div>
 
   </div>
@@ -254,6 +260,9 @@ let current = 0;
 
 const music = document.getElementById("bgMusic");
 const playBtn = document.getElementById("playBtn");
+const nextBtn = document.getElementById("nextBtn");
+const prevBtn = document.getElementById("prevBtn");
+
 const popupImg = document.getElementById("popupImg");
 const popupTitle = document.getElementById("popupTitle");
 
@@ -264,26 +273,48 @@ fetch('lagu.json')
     playlist = data;
   });
 
-// klik play
-playBtn.addEventListener("click", () => {
+// play lagu sekarang
+function playCurrent() {
   if (playlist.length === 0) return;
 
-  current = Math.floor(Math.random() * playlist.length);
-
-  // set lagu
   music.src = playlist[current].src;
   music.currentTime = 0;
   music.volume = 0.5;
   music.play();
 
-  // set gambar & nama
   popupImg.src = playlist[current].img;
   popupTitle.innerText = playlist[current].name;
+}
 
-  // hilangin popup setelah play
-  setTimeout(() => {
-    document.getElementById("musicPopup").style.display = "none";
-  }, 500);
+// play random pertama
+playBtn.addEventListener("click", () => {
+  if (playlist.length === 0) return;
+
+  current = Math.floor(Math.random() * playlist.length);
+  playCurrent();
+
+  document.getElementById("musicPopup").style.display = "none";
+});
+
+// next
+nextBtn.addEventListener("click", () => {
+  current++;
+  if (current >= playlist.length) current = 0;
+  playCurrent();
+});
+
+// previous
+prevBtn.addEventListener("click", () => {
+  current--;
+  if (current < 0) current = playlist.length - 1;
+  playCurrent();
+});
+
+// auto lanjut
+music.addEventListener("ended", () => {
+  current++;
+  if (current >= playlist.length) current = 0;
+  playCurrent();
 });
 
 fetch('data.json')
