@@ -114,6 +114,30 @@ video {
   text-align: center;
 }
 
+.popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  background: rgba(0,0,0,0.85);
+  padding: 15px 18px;
+  border-radius: 12px;
+
+  z-index: 999;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.popup-box button {
+  margin-top: 8px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(37,211,102,0.3);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /* 🔻 Footer kecil */
 .footer {
   margin-top: 40px;
@@ -154,17 +178,16 @@ video {
 Am Prem murah tinggal pencet CS aja</p>
 </div>
 
-<!-- 🎵 Popup -->
+<!-- 🎵 Popup Musik -->
 <div id="musicPopup" class="popup">
   <div class="popup-box">
-    <p>Tap dulu biar masuk vibes 😏</p>
-    <button id="playBtn">Play Music</button>
+    <p style="font-size:13px;">Click untuk memulai musik</p>
+    <button id="playBtn">Play</button>
   </div>
 </div>
 
 <!-- 🎵 Audio -->
 <audio id="bgMusic"></audio>
-
 
 <!-- 🔘 Buttons -->
 <div id="buttons"></div>
@@ -182,6 +205,34 @@ Am Prem murah tinggal pencet CS aja</p>
 <audio id="clickSound" preload="auto">
   <source src="click.mp3" type="audio/mpeg">
 </audio>
+
+let playlist = [];
+let current = 0;
+
+const music = document.getElementById("bgMusic");
+const playBtn = document.getElementById("playBtn");
+
+// ambil lagu dari JSON
+fetch('lagu.json')
+  .then(res => res.json())
+  .then(data => {
+    playlist = data;
+  });
+
+// klik play
+playBtn.addEventListener("click", () => {
+  if (playlist.length === 0) return;
+
+  current = Math.floor(Math.random() * playlist.length);
+
+  music.src = playlist[current].src;
+  music.currentTime = 0;
+  music.volume = 0.5;
+  music.play();
+
+  // hilangin popup
+  document.getElementById("musicPopup").style.display = "none";
+});
 
 <script>
 fetch('data.json')
