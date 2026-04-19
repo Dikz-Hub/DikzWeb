@@ -206,6 +206,8 @@ Am Prem murah tinggal pencet CS aja</p>
   <source src="click.mp3" type="audio/mpeg">
 </audio>
 
+<script>
+
 let playlist = [];
 let current = 0;
 
@@ -234,7 +236,6 @@ playBtn.addEventListener("click", () => {
   document.getElementById("musicPopup").style.display = "none";
 });
 
-<script>
 fetch('data.json')
   .then(res => res.json())
   .then(data => {
