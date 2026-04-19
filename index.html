@@ -167,6 +167,10 @@ Am Prem murah tinggal pencet CS aja</p>
   <a href="https://pin.it/3AC8H8wmu" target="_blank">Pinterest</a>
 </div>
 
+<audio id="clickSound" preload="auto">
+  <source src="click.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 fetch('data.json')
   .then(res => res.json())
@@ -187,6 +191,12 @@ fetch('data.json')
       // teks
       const span = document.createElement("span");
       span.innerText = btn.text;
+
+a.addEventListener("click", () => {
+  const sound = document.getElementById("clickSound");
+  sound.currentTime = 0; // biar bisa spam klik
+  sound.play();
+});
 
       a.appendChild(img);
       a.appendChild(span);
