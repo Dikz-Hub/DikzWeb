@@ -123,24 +123,20 @@ video {
 
 .popup-box {
   position: relative;
-  width: 170px;
-  height: 95px; /* 16:9 */
+  width: 200px;
+  height: 112px;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  transition: 0.3s;
 }
 
-/* gambar */
 .popup-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   position: absolute;
-  top: 0;
-  left: 0;
 }
 
-/* overlay gelap */
 .popup-box::after {
   content: "";
   position: absolute;
@@ -149,7 +145,6 @@ video {
   background: rgba(0,0,0,0.4);
 }
 
-/* isi */
 .popup-content {
   position: relative;
   z-index: 2;
@@ -159,17 +154,13 @@ video {
   transform: translateY(-50%);
 }
 
-.popup-content p {
-  font-size: 11px;
-}
-
-.popup-content button {
+.controls button {
   margin: 3px;
-  padding: 5px 8px;
+  padding: 6px;
   border: none;
   border-radius: 6px;
   background: rgba(255,255,255,0.2);
-  color: white;
+  cursor: pointer;
 }
 
 /* 🔻 Footer kecil */
@@ -216,16 +207,21 @@ Am Prem murah tinggal pencet CS aja</p>
 <div id="musicPopup" class="popup">
   <div class="popup-box">
 
-    <!-- 🖼️ Cover -->
     <img id="popupImg" src="music/cover1.jpg">
 
-    <!-- 🎮 Konten -->
     <div class="popup-content">
-      <p id="popupTitle">Klik buat play 😏</p>
+      <p id="popupTitle">Tap buat play 😏</p>
 
-      <div>
+      <div class="controls">
         <button id="prevBtn">⏮</button>
-        <button id="playBtn">▶</button>
+
+        <!-- 🔥 PLAY / PAUSE SVG -->
+        <button id="playBtn">
+          <svg id="playIcon" viewBox="0 0 24 24" width="18" height="18" fill="white">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+
         <button id="nextBtn">⏭</button>
       </div>
     </div>
@@ -233,7 +229,6 @@ Am Prem murah tinggal pencet CS aja</p>
   </div>
 </div>
 
-<!-- 🎵 Audio -->
 <audio id="bgMusic"></audio>
 
 <!-- 🔘 Buttons -->
@@ -265,38 +260,63 @@ const prevBtn = document.getElementById("prevBtn");
 
 const popupImg = document.getElementById("popupImg");
 const popupTitle = document.getElementById("popupTitle");
+const playIcon = document.getElementById("playIcon");
+const box = document.querySelector(".popup-box");
 
-// ambil data lagu
+// 🔥 icon SVG
+const iconPlay = `<path d="M8 5v14l11-7z"/>`;
+const iconPause = `<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>`;
+
+// ambil lagu
 fetch('lagu.json')
   .then(res => res.json())
-  .then(data => {
-    playlist = data;
-  });
+  .then(data => playlist = data);
 
-// play lagu sekarang
+// ukuran popup
+function setMini() {
+  box.style.width = "150px";
+  box.style.height = "80px";
+}
+
+function setNormal() {
+  box.style.width = "200px";
+  box.style.height = "112px";
+}
+
+// play lagu
 function playCurrent() {
   if (playlist.length === 0) return;
 
   music.src = playlist[current].src;
   music.currentTime = 0;
-  music.volume = 0.5;
   music.play();
 
   popupImg.src = playlist[current].img;
   popupTitle.innerText = playlist[current].name;
+
+  playIcon.innerHTML = iconPause;
+  setMini();
 }
 
-// play random pertama
+// toggle play / pause
 playBtn.addEventListener("click", () => {
   if (playlist.length === 0) return;
 
-  current = Math.floor(Math.random() * playlist.length);
-  playCurrent();
+  if (!music.src) {
+    current = Math.floor(Math.random() * playlist.length);
+    playCurrent();
+    return;
+  }
 
-  const popup = document.getElementById("musicPopup");
-
-popup.style.width = "150px";
-popup.style.height = "80px";
+  if (music.paused) {
+    music.play();
+    playIcon.innerHTML = iconPause;
+    setMini();
+  } else {
+    music.pause();
+    playIcon.innerHTML = iconPlay;
+    setNormal();
+  }
 });
 
 // next
@@ -306,18 +326,23 @@ nextBtn.addEventListener("click", () => {
   playCurrent();
 });
 
-// previous
+// prev
 prevBtn.addEventListener("click", () => {
   current--;
   if (current < 0) current = playlist.length - 1;
   playCurrent();
 });
 
-// auto lanjut
+// kalau pause manual
+music.addEventListener("pause", () => {
+  playIcon.innerHTML = iconPlay;
+  setNormal();
+});
+
+// kalau lagu selesai
 music.addEventListener("ended", () => {
-  current++;
-  if (current >= playlist.length) current = 0;
-  playCurrent();
+  playIcon.innerHTML = iconPlay;
+  setNormal();
 });
 
 fetch('data.json')
