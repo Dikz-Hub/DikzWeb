@@ -209,12 +209,19 @@ fetch('data.json')
       const span = document.createElement("span");
       span.innerText = btn.text;
 
-function testClick() {
+a.addEventListener("click", (e) => {
+  e.preventDefault(); // 🔥 tahan dulu pindah halaman
+
   const sound = document.getElementById("clickSound");
   sound.currentTime = 0;
-  sound.volume = 0.25;
+  sound.volume = 0.2;
   sound.play();
-}
+
+  // baru pindah setelah delay dikit
+  setTimeout(() => {
+    window.open(btn.link, "_blank");
+  }, 150);
+});
 
 a.addEventListener("click", () => {
   const sound = document.getElementById("clickSound");
