@@ -94,21 +94,6 @@ video {
   border-radius: 0;
 }
 
-.test-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  background: rgba(255,255,255,0.2);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.test-btn:hover {
-  background: rgba(255,255,255,0.3);
-}
-
 .btn span {
   flex: 1;
   text-align: center;
@@ -172,8 +157,6 @@ Am Prem murah tinggal pencet CS aja</p>
 <!-- 🔘 Buttons -->
 <div id="buttons"></div>
 
-<button class="test-btn" onclick="testClick()">Test Sound</button>
-
 <!-- 🔻 Judul -->
 <div class="footer-title">Dukungan bantuan</div>
 
@@ -208,20 +191,6 @@ fetch('data.json')
       // teks
       const span = document.createElement("span");
       span.innerText = btn.text;
-
-a.addEventListener("click", (e) => {
-  e.preventDefault(); // 🔥 tahan dulu pindah halaman
-
-  const sound = document.getElementById("clickSound");
-  sound.currentTime = 0;
-  sound.volume = 0.2;
-  sound.play();
-
-  // baru pindah setelah delay dikit
-  setTimeout(() => {
-    window.open(btn.link, "_blank");
-  }, 150);
-});
 
 a.addEventListener("click", () => {
   const sound = document.getElementById("clickSound");
