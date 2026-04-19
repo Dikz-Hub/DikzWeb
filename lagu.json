@@ -1,0 +1,12 @@
+[
+  {
+    "name": "DJ Slow",
+    "src": "music/musik1.mp3",
+    "img": "music/cover1.jpg"
+  },
+  {
+    "name": "Night Vibes",
+    "src": "music/musik2.mp3",
+    "img": "music/cover2.jpg"
+  }
+]
