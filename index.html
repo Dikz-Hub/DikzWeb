@@ -293,7 +293,10 @@ playBtn.addEventListener("click", () => {
   current = Math.floor(Math.random() * playlist.length);
   playCurrent();
 
-  document.getElementById("musicPopup").style.display = "none";
+  const popup = document.getElementById("musicPopup");
+
+popup.style.width = "150px";
+popup.style.height = "80px";
 });
 
 // next
